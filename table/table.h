@@ -61,6 +61,7 @@ class Table {
   explicit Table(Rep* rep) { rep_ = rep; }
   static Iterator* BlockReader(void*, const ReadOptions&, const Slice&);
 
+public: // set as public function for calling by TableCache instead of friend class;
   // Calls (*handle_result)(arg, ...) with the entry found after a call
   // to Seek(key).  May not make such a call if filter policy says
   // that key is not present.
@@ -69,7 +70,7 @@ class Table {
       void* arg,
       void (*handle_result)(void* arg, const Slice& k, const Slice& v));
 
-
+private:
   void ReadMeta(const Footer& footer);
   void ReadFilter(const Slice& filter_handle_value);
 

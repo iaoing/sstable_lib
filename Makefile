@@ -21,13 +21,19 @@ OBJ_FILE:
 
 
 TEST:
-	g++ -c -O0 -g table_test.cc -I . -I./include -DOS_LINUX -DLEVELDB_PLATFORM_POSIX -DLEVELDB_ATOMIC_PRESENT -DSNAPPY
-	g++ -o table_test ./table_test.o -L ./ -ltable -lsnappy -lpthread
+	g++ -c -O0 -g test_table.cc -I . -I./include -DOS_LINUX -DLEVELDB_PLATFORM_POSIX -DLEVELDB_ATOMIC_PRESENT -DSNAPPY
+	g++ -o test_table ./test_table.o -L ./ -ltable -lsnappy -lpthread
+	g++ -c -O0 -g test_block.cc -I . -I./include -DOS_LINUX -DLEVELDB_PLATFORM_POSIX -DLEVELDB_ATOMIC_PRESENT -DSNAPPY
+	g++ -o test_block ./test_block.o -L ./ -ltable -lsnappy -lpthread
 # 	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:`pwd`
 
 
 clean:
-	rm -f ./*.o ./*.d ./*exe ./*stackdump *.sst table_test* libtable.so
+	rm -f ./*.o ./*.d ./*exe ./*stackdump \
+	*.sst \
+	test_table.o test_table \
+	test_block.o test_block \
+	libtable.so
 	cd ./helpers/memenv && $(MAKE) clean && cd -
 	cd ./port && $(MAKE) clean && cd -
 	cd ./util && $(MAKE) clean && cd -

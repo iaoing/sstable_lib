@@ -89,6 +89,10 @@ struct BlockContents {
   bool heap_allocated;  // True iff caller should delete[] data.data()
 };
 
+
+extern Slice RawBlockCrc(CompressionType type, Slice &block_contents);
+
+
 // Read the block identified by "handle" from "file".  On failure
 // return non-OK.  On success fill *result and return OK.
 extern Status ReadBlock(RandomAccessFile* file,

@@ -62,6 +62,17 @@ Status Footer::DecodeFrom(Slice* input) {
   return result;
 }
 
+
+Slice RawBlockCrc(CompressionType type, Slice &block_contents){
+  char trailer[kBlockTrailerSize];
+  trailer[0] = type;
+  uint32_t crc = crc32c::Value(block_contents.data(), block_contents.size());
+  crc = crc32c::Extend(crc, trailer, 1);  // Extend crc to cover block type
+  EncodeFixed32(trailer+1, crc32c::Mask(crc));
+  return Slice(trailer, kBlockTrailerSize);
+}
+
+
 Status ReadBlock(RandomAccessFile* file,
                  const ReadOptions& options,
                  const BlockHandle& handle,
